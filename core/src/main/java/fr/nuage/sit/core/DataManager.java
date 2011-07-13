@@ -17,9 +17,9 @@ public interface DataManager {
 
     List<Entry> getEntries();
 
-    boolean add(Entry entry);
+    boolean update(Entry entry);
 
-    boolean addAll(List<Entry> entries);
+    boolean updateAll(List<Entry> entries);
 
     boolean remove(Entry entry);
 }

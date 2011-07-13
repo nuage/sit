@@ -33,14 +33,14 @@ public class EntryManager {
             throw new IllegalArgumentException();
         }
         if (parent != null) {
-            dataManager.add(entryFactory.addChild(parent, entry));
+            dataManager.update(parent.addChild(entry.getId()));
         }
-        dataManager.add(entry);
+        dataManager.update(entry);
         rightManager.entryCreation(owner, entry);
     }
 
     public void removeEntry(Entry entry, Entry parent) {
-        dataManager.add(entryFactory.removeChild(parent, entry));
+        dataManager.update(parent.removeChild(entry.getId()));
 
         dataManager.remove(entry);
         rightManager.entryRemoval(entry);
@@ -55,7 +55,7 @@ public class EntryManager {
     }
 
     public void answer(Entry parent, String response, User owner) {
-        final Entry entry = entryFactory.make(response, Entry.Type.Note);
+        final Entry entry = entryFactory.make(response, Entry.Type.Note, parent == null ? null : parent.getId());
         addEntry(entry, parent, owner);
     }
 
@@ -63,20 +63,14 @@ public class EntryManager {
         if (!entry.getText().contains(textToExtract)) {
             throw new IllegalArgumentException("Entry " + entry + " does not contain " + textToExtract);
         }
-        final Entry newEntry = entryFactory.extractFrom(entry, textToExtract);
-        Entry oldEntry = entryFactory.make(entry, entry.getText().replace(textToExtract, ""));
-        final List<Entry> childs = entry.getChilds();
-        for (Entry child : childs) {
-            oldEntry = entryFactory.addChild(oldEntry, child);
-        }
+        final Long parentId = parent == null ? null : parent.getId();
+        final Entry newEntry = entryFactory.extractFrom(entry, textToExtract, parentId);
+        parent = parent.addChild(newEntry.getId());
+        
+        entry = entry.updateText(entry.getText().replace(textToExtract, ""));
 
-        Entry newParent = entryFactory.addChild(parent, oldEntry);
-        newParent = entryFactory.addChild(newParent, newEntry);
-
-        dataManager.addAll(Lists.newArrayList(newParent, oldEntry, newEntry));
+        dataManager.updateAll(Lists.newArrayList(parent, entry, newEntry));
         rightManager.copyRights(entry, newEntry);
-        rightManager.copyRights(entry, oldEntry);
-        removeEntry(entry, newParent);
     }
 }
 

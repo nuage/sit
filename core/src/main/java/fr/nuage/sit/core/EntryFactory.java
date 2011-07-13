@@ -12,19 +12,15 @@ import java.util.List;
  */
 public class EntryFactory {
 
-    public Entry make(String text, Entry.Type type) {
-        final SimpleEntry newEntry = new SimpleEntry(getNextId(), text, type);
+    public Entry make(String text, Entry.Type type, Long parent) {
+        final SimpleEntry newEntry = new SimpleEntry(getNextId(), text, type, parent);
         return newEntry;
     }
 
-    public Entry addChild(Entry parent, Entry child) {
-        return ((SimpleEntry)parent).addChild(child);
-    }
-
-    public Entry make(Entry entry, String text) {
-        SimpleEntry newEntry = (SimpleEntry)make(text, entry.getType());
-        final List<Entry> childs = entry.getChilds();
-        for (Entry child : childs) {
+    public Entry make(Entry entry, String text, Long parent) {
+        SimpleEntry newEntry = (SimpleEntry) make(text, entry.getType(), parent);
+        final List<Long> childs = entry.getChilds();
+        for (Long child : childs) {
             newEntry = newEntry.addChild(child);
         }
         return newEntry;
@@ -34,11 +30,8 @@ public class EntryFactory {
         return Math.round(Math.random() * 10000);
     }
 
-    public Entry extractFrom(Entry entry, String textToExtract) {
-        return make(textToExtract, entry.getType());
+    public Entry extractFrom(Entry entry, String textToExtract, Long parent) {
+        return make(textToExtract, entry.getType(), parent);
     }
-    
-    public Entry removeChild(Entry parent, Entry child) {
-        return ((SimpleEntry)parent).removeChild(child);
-    }
+
 }

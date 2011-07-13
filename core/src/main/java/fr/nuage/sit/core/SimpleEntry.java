@@ -15,12 +15,12 @@ import com.google.common.collect.Lists;
 public class SimpleEntry implements Entry {
 
     private long id;
-    private List<Entry> childs;
+    private List<Long> childs;
     private String text;
     private Type type;
-    private Entry parent;
+    private Long parent;
 
-    public SimpleEntry(long id, String text, Type type, Entry parent) {
+    public SimpleEntry(long id, String text, Type type, Long parent) {
         this.id = id;
         this.text = text;
         this.type = type;
@@ -35,15 +35,24 @@ public class SimpleEntry implements Entry {
         childs = Lists.newArrayList(e.getChilds());
     }
 
-    public SimpleEntry addChild(Entry child) {
+    @Override
+    public SimpleEntry addChild(long child) {
         SimpleEntry se = new SimpleEntry(this);
         se.childs.add(child);
         return se;
     }
 
-    public SimpleEntry removeChild(Entry child) {
+    @Override
+    public SimpleEntry removeChild(long child) {
         SimpleEntry se = new SimpleEntry(this);
         se.childs.remove(child);
+        return se;
+    }
+
+    @Override
+    public Entry updateText(String text) {
+        SimpleEntry se = new SimpleEntry(this);
+        se.text = text;
         return se;
     }
 
@@ -52,7 +61,7 @@ public class SimpleEntry implements Entry {
     }
 
     @Override
-    public Entry getParent() {
+    public Long getParent() {
         return parent;
     }
 
@@ -62,7 +71,7 @@ public class SimpleEntry implements Entry {
     }
 
     @Override
-    public List<Entry> getChilds() {
+    public List<Long> getChilds() {
         return ImmutableList.copyOf(childs);
     }
 

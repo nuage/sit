@@ -25,7 +25,13 @@ public interface Entry {
 
     Type getType();
 
-    List<Entry> getChilds();
+    List<Long> getChilds();
 
-    Entry getParent();
+    Entry addChild(long child);
+
+    Entry removeChild(long child);
+
+    Entry updateText(String text);
+
+    Long getParent();
 }

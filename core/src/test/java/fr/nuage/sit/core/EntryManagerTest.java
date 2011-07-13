@@ -7,6 +7,7 @@ package fr.nuage.sit.core;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import java.util.List;
 import junit.framework.TestCase;
 import org.mockito.Mockito;
 
@@ -33,7 +34,7 @@ public class EntryManagerTest extends TestCase {
         Mockito.when(user.getName()).thenReturn("Quentin");
 
         entryManager = injector.getInstance(EntryManager.class);
-        Entry project = new SimpleEntry(ROOT_ID, "ProjetTest", Entry.Type.Project);
+        Entry project = new SimpleEntry(ROOT_ID, "ProjetTest", Entry.Type.Project, null);
         entryManager.addEntry(project, null, user);
     }
 
@@ -47,9 +48,9 @@ public class EntryManagerTest extends TestCase {
      */
     public void testAddEntry() {
         System.out.println("addEntry");
-        Entry entry = new SimpleEntry(1, "text", Entry.Type.Note);
+        Entry entry = new SimpleEntry(2, "text", Entry.Type.Note, null);
         entryManager.addEntry(entry, entryManager.getEntry(ROOT_ID), user);
-        assertTrue(entryManager.getEntries().size() == 1);
+        assertTrue(entryManager.getEntry(ROOT_ID).getChilds().size() == 1);
     }
 
     /**
@@ -57,7 +58,7 @@ public class EntryManagerTest extends TestCase {
      */
     public void testRemoveEntry() {
         System.out.println("removeEntry");
-        Entry entry = new SimpleEntry(2, "text", Entry.Type.Note);
+        Entry entry = new SimpleEntry(2, "text", Entry.Type.Note, null);
         entryManager.addEntry(entry, entryManager.getEntry(ROOT_ID), user);
         entryManager.removeEntry(entry, entryManager.getEntry(ROOT_ID));
         assertTrue(entryManager.getEntry(ROOT_ID).getChilds().isEmpty());
@@ -70,12 +71,16 @@ public class EntryManagerTest extends TestCase {
         System.out.println("extractFromEntry");
         String text1 = "[Issue 1]";
         String text2 = "[Issue 2]";
-        Entry entry = new SimpleEntry(2, text1 + text2, Entry.Type.Note);
+        Entry entry = new SimpleEntry(2, text1 + text2, Entry.Type.Note, null);
         entryManager.addEntry(entry, entryManager.getEntry(ROOT_ID), user);
         entryManager.extractFromEntry(entry, text2, entryManager.getEntry(ROOT_ID));
         assertEquals(2, entryManager.getEntry(ROOT_ID).getChilds().size());
-        assertEquals(text1, entryManager.getEntry(ROOT_ID).getChilds().get(0).getText());
-        assertEquals(text2, entryManager.getEntry(ROOT_ID).getChilds().get(1).getText());
+        
+        List<Long> childs = entryManager.getEntry(ROOT_ID).getChilds();
+        Entry child1 = entryManager.getEntry(childs.get(0));
+        assertEquals(text1, child1.getText());
+        Entry child2 = entryManager.getEntry(childs.get(1));
+        assertEquals(text2, child2.getText());
     }
 
 }

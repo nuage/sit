@@ -28,13 +28,13 @@ public class SimpleDataManager implements DataManager {
     }
 
     @Override
-    public boolean add(Entry entry) {
+    public boolean update(Entry entry) {
         entries.put(entry.getId(), entry);
         return true;
     }
 
     @Override
-    public boolean addAll(List<Entry> entries) {
+    public boolean updateAll(List<Entry> entries) {
         for (Entry entry : entries) {
             this.entries.put(entry.getId(), entry);
         }
