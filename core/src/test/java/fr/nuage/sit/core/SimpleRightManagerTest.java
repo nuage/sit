@@ -7,7 +7,7 @@ package fr.nuage.sit.core;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import fr.nuage.sit.core.UserRight.Permission;
+import fr.nuage.sit.core.RightManager.Permission;
 import junit.framework.TestCase;
 
 /**
@@ -34,32 +34,49 @@ public class SimpleRightManagerTest extends TestCase {
     }
 
     /**
-     * Test of entryCreation method, of class SimpleRightManager.
+     * Test of grant method, of class SimpleRightManager.
      */
-    public void testEntryCreation() {
-        System.out.println("entryCreation");
+    public void testGrant() {
+        System.out.println("grant");
         User owner = new User(1, "Quentin");
-        Entry entry = null;
-        SimpleRightManager instance = new SimpleRightManager();
-        boolean expResult = false;
-        boolean result = instance.entryCreation(owner, entry);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        final EntryFactory ef = new EntryFactory();
+        Entry entry = ef.make("aa", Entry.Type.Note, 1l);
+        boolean result = srm.grant(owner, entry, Permission.Delete);
+        assertEquals(true, result);
+        assertTrue(srm.can(owner, entry, Permission.Delete));
+        assertTrue(srm.can(owner, entry, Permission.Modify));
+        assertTrue(srm.can(owner, entry, Permission.Read));
+
+        result = srm.grant(owner, entry, Permission.Modify);
+        assertEquals(true, result);
+        assertFalse(srm.can(owner, entry, Permission.Delete));
+        assertTrue(srm.can(owner, entry, Permission.Modify));
+        assertTrue(srm.can(owner, entry, Permission.Read));
+
+        result = srm.grant(owner, entry, Permission.Read);
+        assertEquals(true, result);
+        assertFalse(srm.can(owner, entry, Permission.Delete));
+        assertFalse(srm.can(owner, entry, Permission.Modify));
+        assertTrue(srm.can(owner, entry, Permission.Read));
     }
 
     /**
-     * Test of entryRemoval method, of class SimpleRightManager.
+     * Test of remove method, of class SimpleRightManager.
      */
-    public void testEntryRemoval() {
-        System.out.println("entryRemoval");
-        Entry entry = null;
-        SimpleRightManager instance = new SimpleRightManager();
-        boolean expResult = false;
-        boolean result = instance.entryRemoval(entry);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testRemove() {
+        System.out.println("remove");
+        User owner = new User(1, "Quentin");
+        final EntryFactory ef = new EntryFactory();
+        Entry entry = ef.make("aa", Entry.Type.Note, 1l);
+        boolean result = srm.grant(owner, entry, Permission.Delete);
+        assertEquals(true, result);
+
+        result = srm.remove(entry);
+        assertEquals(true, result);
+
+        assertFalse(srm.can(owner, entry, Permission.Delete));
+        assertFalse(srm.can(owner, entry, Permission.Modify));
+        assertFalse(srm.can(owner, entry, Permission.Read));
     }
 
     /**
@@ -67,45 +84,19 @@ public class SimpleRightManagerTest extends TestCase {
      */
     public void testCopyRights() {
         System.out.println("copyRights");
-        Entry source = null;
-        Entry dest = null;
-        SimpleRightManager instance = new SimpleRightManager();
-        boolean expResult = false;
-        boolean result = instance.copyRights(source, dest);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        User owner = new User(1, "Quentin");
+        final EntryFactory ef = new EntryFactory();
+        Entry source = ef.make("aa", Entry.Type.Note, 1l);
+        boolean result = srm.grant(owner, source, Permission.Delete);
+        assertEquals(true, result);
 
-    /**
-     * Test of getRight method, of class SimpleRightManager.
-     */
-    public void testGetRight() {
-        System.out.println("getRight");
-        User user = null;
-        Entry entry = null;
-        SimpleRightManager instance = new SimpleRightManager();
-        UserRight expResult = null;
-        UserRight result = instance.getRight(user, entry);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        Entry dest = ef.make("bb", Entry.Type.Note, 1l);
 
-    /**
-     * Test of can method, of class SimpleRightManager.
-     */
-    public void testCan() {
-        System.out.println("can");
-        User user = null;
-        Entry entry = null;
-        Permission permission = null;
-        SimpleRightManager instance = new SimpleRightManager();
-        boolean expResult = false;
-        boolean result = instance.can(user, entry, permission);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+        result = srm.copy(source, dest);
+        assertEquals(true, result);
 
+        assertTrue(srm.can(owner, dest, Permission.Delete));
+        assertTrue(srm.can(owner, dest, Permission.Modify));
+        assertTrue(srm.can(owner, dest, Permission.Read));
+    }
 }

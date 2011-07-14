@@ -36,14 +36,14 @@ public class EntryManager {
             dataManager.update(parent.addChild(entry.getId()));
         }
         dataManager.update(entry);
-        rightManager.entryCreation(owner, entry);
+        rightManager.grant(owner, entry, RightManager.Permission.Delete);
     }
 
     public void removeEntry(Entry entry, Entry parent) {
         dataManager.update(parent.removeChild(entry.getId()));
 
         dataManager.remove(entry);
-        rightManager.entryRemoval(entry);
+        rightManager.remove(entry);
     }
 
     public List<Entry> getEntries() {
@@ -70,7 +70,7 @@ public class EntryManager {
         entry = entry.updateText(entry.getText().replace(textToExtract, ""));
 
         dataManager.updateAll(Lists.newArrayList(parent, entry, newEntry));
-        rightManager.copyRights(entry, newEntry);
+        rightManager.copy(entry, newEntry);
     }
 }
 

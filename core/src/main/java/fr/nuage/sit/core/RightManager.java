@@ -2,7 +2,6 @@
  * Project Simple Issue Tracker
  * All copyright reserved
  */
-
 package fr.nuage.sit.core;
 
 /**
@@ -11,13 +10,18 @@ package fr.nuage.sit.core;
  */
 public interface RightManager {
 
-    boolean can(User user, Entry entry, UserRight.Permission permission);
+    enum Permission {
 
-    UserRight getRight(User user, Entry entry);
+        Read,
+        Modify,
+        Delete
+    }
 
-    boolean entryCreation(User owner, Entry entry);
+    boolean can(User user, Entry entry, Permission permission);
 
-    boolean entryRemoval(Entry entry);
+    boolean grant(User user, Entry entry, Permission permission);
 
-    boolean copyRights(Entry source, Entry dest);
+    boolean remove(Entry entry);
+
+    boolean copy(Entry source, Entry dest);
 }
