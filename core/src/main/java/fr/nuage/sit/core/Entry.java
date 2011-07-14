@@ -33,6 +33,8 @@ public interface Entry {
 
     Entry removeChild(long child);
 
+    Entry moveChild(long child, int index);
+
     Entry updateText(String text);
 
     Entry setParent(long parent);

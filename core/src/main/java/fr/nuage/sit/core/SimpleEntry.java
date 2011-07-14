@@ -63,6 +63,14 @@ public class SimpleEntry implements Entry {
         return se;
     }
 
+    @Override
+    public Entry moveChild(long child, int index) {
+        SimpleEntry se = new SimpleEntry(this);
+        se.childs.remove(child);
+        se.childs.add(index, child);
+        return se;
+    }
+
     public void setText(String text) {
         this.text = text;
     }
