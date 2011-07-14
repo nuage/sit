@@ -26,38 +26,34 @@ public class SimpleRightManager implements RightManager {
     }
 
     @Override
-    public boolean grant(User user, Entry entry, Permission permission) {
-        return addRight(user.getId(), entry.getId(), permission);
-    }
-
-    private boolean addRight(long user, long entry, Permission permission) {
+    public boolean grant(long user, long entry, Permission permission) {
         rights.put(user, entry, permission);
         return true;
     }
 
     @Override
-    public boolean remove(Entry entry) {
-        final Set<Long> users = rights.column(entry.getId()).keySet();
+    public boolean remove(long entry) {
+        final Set<Long> users = rights.column(entry).keySet();
         for (Long user : users) {
-            rights.remove(user, entry.getId());
+            rights.remove(user, entry);
         }
         return true;
     }
 
     @Override
-    public boolean copy(Entry source, Entry dest) {
+    public boolean copy(long source, long dest) {
         boolean allSuccess = true;
-        final Map<Long, Permission> column = rights.column(source.getId());
+        final Map<Long, Permission> column = rights.column(source);
         for (Long user : column.keySet()) {
             Permission perm = column.get(user);
-            addRight(user, dest.getId(), perm);
+            grant(user, dest, perm);
         }
         return allSuccess;
     }
 
     @Override
-    public boolean can(User user, Entry entry, Permission permission) {
-        final Permission perm = rights.get(user.getId(), entry.getId());
+    public boolean can(long user, long entry, Permission permission) {
+        final Permission perm = rights.get(user, entry);
         return perm != null && perm.ordinal() >= permission.ordinal();
     }
 }

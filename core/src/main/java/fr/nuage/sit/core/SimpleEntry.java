@@ -56,6 +56,13 @@ public class SimpleEntry implements Entry {
         return se;
     }
 
+    @Override
+    public Entry setParent(long parent) {
+        SimpleEntry se = new SimpleEntry(this);
+        se.parent = parent;
+        return se;
+    }
+
     public void setText(String text) {
         this.text = text;
     }

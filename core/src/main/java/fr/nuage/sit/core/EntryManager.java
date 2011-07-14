@@ -28,19 +28,19 @@ public class EntryManager {
         this.entryFactory = entryFactory;
     }
 
-    public void addEntry(Entry entry, Entry parent, User owner) {
-        if (parent == null && entry.getType() != Entry.Type.Project) {
-            throw new IllegalArgumentException();
-        }
-        if (parent != null) {
-            dataManager.update(parent.addChild(entry.getId()));
-        }
-        dataManager.update(entry);
-        rightManager.grant(owner, entry, RightManager.Permission.Delete);
+    public void newProject(Entry project, long owner) {
+        dataManager.update(project);
+        rightManager.grant(owner, project.getId(), RightManager.Permission.Delete);
     }
 
-    public void removeEntry(Entry entry, Entry parent) {
-        dataManager.update(parent.removeChild(entry.getId()));
+    public void add(Entry entry, long parent, long owner) {
+        dataManager.update(get(parent).addChild(entry.getId()));
+        dataManager.update(entry.setParent(parent));
+        rightManager.grant(owner, entry.getId(), RightManager.Permission.Delete);
+    }
+
+    public void remove(long entry, long parent) {
+        dataManager.update(get(parent).removeChild(entry));
 
         dataManager.remove(entry);
         rightManager.remove(entry);
@@ -50,27 +50,29 @@ public class EntryManager {
         return dataManager.getEntries();
     }
 
-    public Entry getEntry(long id) {
+    public Entry get(long id) {
         return dataManager.getEntry(id);
     }
 
-    public void answer(Entry parent, String response, User owner) {
-        final Entry entry = entryFactory.make(response, Entry.Type.Note, parent == null ? null : parent.getId());
-        addEntry(entry, parent, owner);
+    public void answer(long parent, String response, long owner) {
+        final Entry entry = entryFactory.make(response, Entry.Type.Note, parent);
+        add(entry, parent, owner);
     }
 
-    public void extractFromEntry(Entry entry, String textToExtract, Entry parent) {
+    public void extract(long entryId, String textToExtract) {
+        Entry entry = get(entryId);
         if (!entry.getText().contains(textToExtract)) {
             throw new IllegalArgumentException("Entry " + entry + " does not contain " + textToExtract);
         }
-        final Long parentId = parent == null ? null : parent.getId();
+        final Long parentId = entry.getParent();
         final Entry newEntry = entryFactory.extractFrom(entry, textToExtract, parentId);
+        Entry parent = get(parentId);
         parent = parent.addChild(newEntry.getId());
         
         entry = entry.updateText(entry.getText().replace(textToExtract, ""));
 
         dataManager.updateAll(Lists.newArrayList(parent, entry, newEntry));
-        rightManager.copy(entry, newEntry);
+        rightManager.copy(entryId, newEntry.getId());
     }
 }
 

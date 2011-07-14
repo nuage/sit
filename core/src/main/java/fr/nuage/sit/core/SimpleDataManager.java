@@ -47,8 +47,8 @@ public class SimpleDataManager implements DataManager {
     }
 
     @Override
-    public boolean remove(Entry entry) {
-        entries.remove(entry.getId());
+    public boolean remove(long entry) {
+        entries.remove(entry);
         return true;
     }
 }

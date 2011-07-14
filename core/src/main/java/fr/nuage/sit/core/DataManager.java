@@ -21,5 +21,5 @@ public interface DataManager {
 
     boolean updateAll(List<Entry> entries);
 
-    boolean remove(Entry entry);
+    boolean remove(long entry);
 }

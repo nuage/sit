@@ -35,7 +35,7 @@ public class EntryManagerTest extends TestCase {
 
         entryManager = injector.getInstance(EntryManager.class);
         Entry project = new SimpleEntry(ROOT_ID, "ProjetTest", Entry.Type.Project, null);
-        entryManager.addEntry(project, null, user);
+        entryManager.newProject(project, user.getId());
     }
 
     @Override
@@ -49,8 +49,8 @@ public class EntryManagerTest extends TestCase {
     public void testAddEntry() {
         System.out.println("addEntry");
         Entry entry = new SimpleEntry(2, "text", Entry.Type.Note, null);
-        entryManager.addEntry(entry, entryManager.getEntry(ROOT_ID), user);
-        assertTrue(entryManager.getEntry(ROOT_ID).getChilds().size() == 1);
+        entryManager.add(entry, ROOT_ID, user.getId());
+        assertTrue(entryManager.get(ROOT_ID).getChilds().size() == 1);
     }
 
     /**
@@ -59,27 +59,27 @@ public class EntryManagerTest extends TestCase {
     public void testRemoveEntry() {
         System.out.println("removeEntry");
         Entry entry = new SimpleEntry(2, "text", Entry.Type.Note, null);
-        entryManager.addEntry(entry, entryManager.getEntry(ROOT_ID), user);
-        entryManager.removeEntry(entry, entryManager.getEntry(ROOT_ID));
-        assertTrue(entryManager.getEntry(ROOT_ID).getChilds().isEmpty());
+        entryManager.add(entry, ROOT_ID, user.getId());
+        entryManager.remove(entry.getId(), ROOT_ID);
+        assertTrue(entryManager.get(ROOT_ID).getChilds().isEmpty());
     }
 
     /**
-     * Test of extractFromEntry method, of class EntryManager.
+     * Test of extract method, of class EntryManager.
      */
     public void testExtractFromEntry() {
         System.out.println("extractFromEntry");
         String text1 = "[Issue 1]";
         String text2 = "[Issue 2]";
         Entry entry = new SimpleEntry(2, text1 + text2, Entry.Type.Note, null);
-        entryManager.addEntry(entry, entryManager.getEntry(ROOT_ID), user);
-        entryManager.extractFromEntry(entry, text2, entryManager.getEntry(ROOT_ID));
-        assertEquals(2, entryManager.getEntry(ROOT_ID).getChilds().size());
+        entryManager.add(entry, ROOT_ID, user.getId());
+        entryManager.extract(entry.getId(), text2);
+        assertEquals(2, entryManager.get(ROOT_ID).getChilds().size());
         
-        List<Long> childs = entryManager.getEntry(ROOT_ID).getChilds();
-        Entry child1 = entryManager.getEntry(childs.get(0));
+        List<Long> childs = entryManager.get(ROOT_ID).getChilds();
+        Entry child1 = entryManager.get(childs.get(0));
         assertEquals(text1, child1.getText());
-        Entry child2 = entryManager.getEntry(childs.get(1));
+        Entry child2 = entryManager.get(childs.get(1));
         assertEquals(text2, child2.getText());
     }
 

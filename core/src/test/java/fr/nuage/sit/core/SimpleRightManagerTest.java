@@ -41,23 +41,23 @@ public class SimpleRightManagerTest extends TestCase {
         User owner = new User(1, "Quentin");
         final EntryFactory ef = new EntryFactory();
         Entry entry = ef.make("aa", Entry.Type.Note, 1l);
-        boolean result = srm.grant(owner, entry, Permission.Delete);
+        boolean result = srm.grant(owner.getId(), entry.getId(), Permission.Delete);
         assertEquals(true, result);
-        assertTrue(srm.can(owner, entry, Permission.Delete));
-        assertTrue(srm.can(owner, entry, Permission.Modify));
-        assertTrue(srm.can(owner, entry, Permission.Read));
+        assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Delete));
+        assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Modify));
+        assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Read));
 
-        result = srm.grant(owner, entry, Permission.Modify);
+        result = srm.grant(owner.getId(), entry.getId(), Permission.Modify);
         assertEquals(true, result);
-        assertFalse(srm.can(owner, entry, Permission.Delete));
-        assertTrue(srm.can(owner, entry, Permission.Modify));
-        assertTrue(srm.can(owner, entry, Permission.Read));
+        assertFalse(srm.can(owner.getId(), entry.getId(), Permission.Delete));
+        assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Modify));
+        assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Read));
 
-        result = srm.grant(owner, entry, Permission.Read);
+        result = srm.grant(owner.getId(), entry.getId(), Permission.Read);
         assertEquals(true, result);
-        assertFalse(srm.can(owner, entry, Permission.Delete));
-        assertFalse(srm.can(owner, entry, Permission.Modify));
-        assertTrue(srm.can(owner, entry, Permission.Read));
+        assertFalse(srm.can(owner.getId(), entry.getId(), Permission.Delete));
+        assertFalse(srm.can(owner.getId(), entry.getId(), Permission.Modify));
+        assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Read));
     }
 
     /**
@@ -68,15 +68,15 @@ public class SimpleRightManagerTest extends TestCase {
         User owner = new User(1, "Quentin");
         final EntryFactory ef = new EntryFactory();
         Entry entry = ef.make("aa", Entry.Type.Note, 1l);
-        boolean result = srm.grant(owner, entry, Permission.Delete);
+        boolean result = srm.grant(owner.getId(), entry.getId(), Permission.Delete);
         assertEquals(true, result);
 
-        result = srm.remove(entry);
+        result = srm.remove(entry.getId());
         assertEquals(true, result);
 
-        assertFalse(srm.can(owner, entry, Permission.Delete));
-        assertFalse(srm.can(owner, entry, Permission.Modify));
-        assertFalse(srm.can(owner, entry, Permission.Read));
+        assertFalse(srm.can(owner.getId(), entry.getId(), Permission.Delete));
+        assertFalse(srm.can(owner.getId(), entry.getId(), Permission.Modify));
+        assertFalse(srm.can(owner.getId(), entry.getId(), Permission.Read));
     }
 
     /**
@@ -87,16 +87,16 @@ public class SimpleRightManagerTest extends TestCase {
         User owner = new User(1, "Quentin");
         final EntryFactory ef = new EntryFactory();
         Entry source = ef.make("aa", Entry.Type.Note, 1l);
-        boolean result = srm.grant(owner, source, Permission.Delete);
+        boolean result = srm.grant(owner.getId(), source.getId(), Permission.Delete);
         assertEquals(true, result);
 
         Entry dest = ef.make("bb", Entry.Type.Note, 1l);
 
-        result = srm.copy(source, dest);
+        result = srm.copy(source.getId(), dest.getId());
         assertEquals(true, result);
 
-        assertTrue(srm.can(owner, dest, Permission.Delete));
-        assertTrue(srm.can(owner, dest, Permission.Modify));
-        assertTrue(srm.can(owner, dest, Permission.Read));
+        assertTrue(srm.can(owner.getId(), dest.getId(), Permission.Delete));
+        assertTrue(srm.can(owner.getId(), dest.getId(), Permission.Modify));
+        assertTrue(srm.can(owner.getId(), dest.getId(), Permission.Read));
     }
 }

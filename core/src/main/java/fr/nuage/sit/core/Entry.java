@@ -27,11 +27,13 @@ public interface Entry {
 
     List<Long> getChilds();
 
+    Long getParent();
+
     Entry addChild(long child);
 
     Entry removeChild(long child);
 
     Entry updateText(String text);
 
-    Long getParent();
+    Entry setParent(long parent);
 }

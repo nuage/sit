@@ -17,11 +17,11 @@ public interface RightManager {
         Delete
     }
 
-    boolean can(User user, Entry entry, Permission permission);
+    boolean can(long user, long entry, Permission permission);
 
-    boolean grant(User user, Entry entry, Permission permission);
+    boolean grant(long user, long entry, Permission permission);
 
-    boolean remove(Entry entry);
+    boolean remove(long entry);
 
-    boolean copy(Entry source, Entry dest);
+    boolean copy(long source, long dest);
 }
