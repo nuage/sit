@@ -59,6 +59,14 @@ public class EntryManager {
         add(entry, parent, owner);
     }
 
+    public void move(long entry, long newParent) {
+        Entry oldParent = get(get(entry).getParent());
+        oldParent = oldParent.removeChild(entry);
+
+        dataManager.update(oldParent);
+        dataManager.update(get(newParent).addChild(entry));
+    }
+
     public void extract(long entryId, String textToExtract) {
         Entry entry = get(entryId);
         if (!entry.getText().contains(textToExtract)) {

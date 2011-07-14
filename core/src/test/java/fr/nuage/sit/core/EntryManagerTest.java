@@ -83,5 +83,22 @@ public class EntryManagerTest extends TestCase {
         assertEquals(text2, child2.getText());
     }
 
+    /**
+     *
+     */
+    public void testMove() {
+        System.out.println("move");
+        Entry entry = new SimpleEntry(2, "text", Entry.Type.Note, null);
+        entryManager.add(entry, ROOT_ID, user.getId());
+
+        Entry otherProject = new SimpleEntry(3, "project 2", Entry.Type.Project, null);
+        entryManager.newProject(otherProject, user.getId());
+
+        entryManager.move(entry.getId(), otherProject.getId());
+
+        assertTrue(entryManager.get(ROOT_ID).getChilds().isEmpty());
+        assertEquals(1, entryManager.get(otherProject.getId()).getChilds().size());
+    }
+
 }
 
