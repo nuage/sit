@@ -28,9 +28,10 @@ public class EntryManager {
         this.entryFactory = entryFactory;
     }
 
-    public void newProject(Entry project, long owner) {
+    public boolean newProject(Entry project, long owner) {
         dataManager.update(project);
         rightManager.grant(owner, project.getId(), RightManager.Permission.Delete);
+        return true;
     }
 
     public boolean add(Entry entry, long parent, long owner) {
@@ -40,11 +41,12 @@ public class EntryManager {
         return true;
     }
 
-    public void remove(long entry, long parent) {
+    public boolean remove(long entry, long parent) {
         dataManager.update(get(parent).removeChild(entry));
 
         dataManager.remove(entry);
         rightManager.remove(entry);
+        return true;
     }
 
     public List<Entry> getEntries() {
@@ -55,20 +57,22 @@ public class EntryManager {
         return dataManager.getEntry(id);
     }
 
-    public void answer(long parent, String response, long owner) {
+    public boolean answer(long parent, String response, long owner) {
         final Entry entry = entryFactory.make(response, Entry.Type.Note, parent);
         add(entry, parent, owner);
+        return true;
     }
 
-    public void move(long entry, long newParent) {
+    public boolean move(long entry, long newParent) {
         Entry oldParent = get(get(entry).getParent());
         oldParent = oldParent.removeChild(entry);
 
         dataManager.update(oldParent);
         dataManager.update(get(newParent).addChild(entry));
+        return true;
     }
 
-    public void extract(long entryId, String textToExtract) {
+    public boolean extract(long entryId, String textToExtract) {
         Entry entry = get(entryId);
         if (!entry.getText().contains(textToExtract)) {
             throw new IllegalArgumentException("Entry " + entry + " does not contain " + textToExtract);
@@ -82,6 +86,8 @@ public class EntryManager {
 
         dataManager.updateAll(Lists.newArrayList(parent, entry, newEntry));
         rightManager.copy(entryId, newEntry.getId());
+        
+        return true;
     }
 }
 
