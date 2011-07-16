@@ -4,6 +4,7 @@
  */
 package fr.nuage.sit.gui;
 
+import fr.nuage.sit.gui.cmd.Command;
 import freemarker.template.TemplateException;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -6,11 +6,11 @@
   </head>
   <body>
     <#if success>
-        <h2>New Entry Added !</h2>
+        <h2>New Projet Added !</h2>
         <table>
-            <tr><td>Id</td><td>${entry.id?c}</td>
-            <tr><td>Text</td><td>${entry.text}</td>
-            <tr><td>Type</td><td>${entry.type}</td>
+            <tr><td>Id</td><td>${project.id?c}</td>
+            <tr><td>Text</td><td>${project.text}</td>
+            <tr><td>Type</td><td>${project.type}</td>
         </table>
     </#if>
   </body>

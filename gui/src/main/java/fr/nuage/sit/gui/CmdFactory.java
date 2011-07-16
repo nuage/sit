@@ -5,6 +5,7 @@
 
 package fr.nuage.sit.gui;
 
+import fr.nuage.sit.gui.cmd.Command;
 import com.google.common.base.Strings;
 import com.google.inject.Guice;
 import com.google.inject.Injector;

@@ -3,7 +3,7 @@
  * All copyright reserved
  */
 
-package fr.nuage.sit.gui;
+package fr.nuage.sit.gui.cmd;
 
 import com.google.common.base.Function;
 import com.google.common.base.Strings;

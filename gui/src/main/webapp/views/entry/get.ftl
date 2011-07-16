@@ -5,13 +5,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-    <#if success>
-        <h2>New Entry Added !</h2>
+    <#list entries as entry>
         <table>
             <tr><td>Id</td><td>${entry.id?c}</td>
             <tr><td>Text</td><td>${entry.text}</td>
             <tr><td>Type</td><td>${entry.type}</td>
         </table>
-    </#if>
+    </#list>
   </body>
 </html>
