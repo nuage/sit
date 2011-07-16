@@ -31,35 +31,35 @@ public class MockData extends Command {
     protected Map<String, Object> response(Map<String, String> params, Long user) {
         final EntryFactory entryFactory = new EntryFactory();
         
-        final Entry project = entryFactory.make("MyProject", Entry.Type.Project, null);
+        final Entry project = entryFactory.make("MyProject", Entry.Type.Project);
         final long root = project.getId();
         
         entryManager.newProject(project, user);
-        final Entry issue1 = entryFactory.make("Issue 1", Entry.Type.Issue, root);
+        final Entry issue1 = entryFactory.make("Issue 1", Entry.Type.Issue);
         entryManager.add(issue1, root, user);
-        entryManager.add(entryFactory.make("Issue 1 Comment 1", Entry.Type.Note, issue1.getId()), issue1.getId(), user);
-        entryManager.add(entryFactory.make("Issue 1 Comment 2", Entry.Type.Note, issue1.getId()), issue1.getId(), user);
-        entryManager.add(entryFactory.make("Issue 1 Comment 3", Entry.Type.Note, issue1.getId()), issue1.getId(), user);
-        final Entry issue1SubIssue1 = entryFactory.make("Issue 1 Sub Issue 1", Entry.Type.Issue, issue1.getId());
+        entryManager.add(entryFactory.make("Issue 1 Comment 1", Entry.Type.Note), issue1.getId(), user);
+        entryManager.add(entryFactory.make("Issue 1 Comment 2", Entry.Type.Note), issue1.getId(), user);
+        entryManager.add(entryFactory.make("Issue 1 Comment 3", Entry.Type.Note), issue1.getId(), user);
+        final Entry issue1SubIssue1 = entryFactory.make("Issue 1 Sub Issue 1", Entry.Type.Issue);
         entryManager.add(issue1SubIssue1, issue1.getId(), user);
-        entryManager.add(entryFactory.make("Issue 1 Sub Issue 1 Comment 1", Entry.Type.Note, issue1SubIssue1.getId()), issue1SubIssue1.getId(), user);
-        entryManager.add(entryFactory.make("Issue 1 Sub Issue 1 Comment 2", Entry.Type.Note, issue1SubIssue1.getId()), issue1SubIssue1.getId(), user);
+        entryManager.add(entryFactory.make("Issue 1 Sub Issue 1 Comment 1", Entry.Type.Note), issue1SubIssue1.getId(), user);
+        entryManager.add(entryFactory.make("Issue 1 Sub Issue 1 Comment 2", Entry.Type.Note), issue1SubIssue1.getId(), user);
         
-        final Entry issue2= entryFactory.make("Issue 2", Entry.Type.Issue, root);
+        final Entry issue2= entryFactory.make("Issue 2", Entry.Type.Issue);
         entryManager.add(issue2, root, user);
-        entryManager.add(entryFactory.make("Issue 2 Comment 1", Entry.Type.Note, issue2.getId()), issue2.getId(), user);
-        entryManager.add(entryFactory.make("Issue 2 Comment 2", Entry.Type.Note, issue2.getId()), issue2.getId(), user);
+        entryManager.add(entryFactory.make("Issue 2 Comment 1", Entry.Type.Note), issue2.getId(), user);
+        entryManager.add(entryFactory.make("Issue 2 Comment 2", Entry.Type.Note), issue2.getId(), user);
         
-        entryManager.add(entryFactory.make("Issue 3", Entry.Type.Issue, root), root, user);
+        entryManager.add(entryFactory.make("Issue 3", Entry.Type.Issue), root, user);
         
-        final Entry issue4 = entryFactory.make("Issue 4", Entry.Type.Issue, root);
+        final Entry issue4 = entryFactory.make("Issue 4", Entry.Type.Issue);
         entryManager.add(issue4, root, user);
-        entryManager.add(entryFactory.make("Issue 4 Comment 1", Entry.Type.Note, issue4.getId()), issue4.getId(), user);
-        entryManager.add(entryFactory.make("Issue 4 Comment 2", Entry.Type.Note, issue4.getId()), issue4.getId(), user);
-        entryManager.add(entryFactory.make("Issue 4 Comment 3", Entry.Type.Note, issue4.getId()), issue4.getId(), user);
-        entryManager.add(entryFactory.make("Issue 4 Comment 4", Entry.Type.Note, issue4.getId()), issue4.getId(), user);
-        entryManager.add(entryFactory.make("Issue 4 Comment 5", Entry.Type.Note, issue4.getId()), issue4.getId(), user);
-        entryManager.add(entryFactory.make("Issue 4 Comment 6", Entry.Type.Note, issue4.getId()), issue4.getId(), user);
+        entryManager.add(entryFactory.make("Issue 4 Comment 1", Entry.Type.Note), issue4.getId(), user);
+        entryManager.add(entryFactory.make("Issue 4 Comment 2", Entry.Type.Note), issue4.getId(), user);
+        entryManager.add(entryFactory.make("Issue 4 Comment 3", Entry.Type.Note), issue4.getId(), user);
+        entryManager.add(entryFactory.make("Issue 4 Comment 4", Entry.Type.Note), issue4.getId(), user);
+        entryManager.add(entryFactory.make("Issue 4 Comment 5", Entry.Type.Note), issue4.getId(), user);
+        entryManager.add(entryFactory.make("Issue 4 Comment 6", Entry.Type.Note), issue4.getId(), user);
         
         final List<Entry> projects = entryManager.getProjects();
         Map<String, Object> data = newHashMap();

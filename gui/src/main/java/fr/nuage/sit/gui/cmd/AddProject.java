@@ -31,7 +31,7 @@ public class AddProject extends Command {
     protected Map<String, Object> response(Map<String, String> params, Long user) {
         final EntryFactory entryFactory = new EntryFactory();
         final String text = getS(params, "text");
-        final Entry entry = entryFactory.make(text, Type.Project, null);
+        final Entry entry = entryFactory.make(text, Type.Project);
         boolean success = entryManager.newProject(entry, user);
 
         Map<String, Object> data = newHashMap();

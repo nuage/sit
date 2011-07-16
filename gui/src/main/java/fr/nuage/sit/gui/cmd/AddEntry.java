@@ -32,7 +32,7 @@ public class AddEntry extends Command {
         final EntryFactory entryFactory = new EntryFactory();
         final String text = getS(params, "text");
         final Long parent = getL(params, "parent");
-        final Entry entry = entryFactory.make(text, Type.Note, parent);
+        final Entry entry = entryFactory.make(text, Type.Note);
         boolean success = entryManager.add(entry, parent, user);
 
         Map<String, Object> data = newHashMap();
