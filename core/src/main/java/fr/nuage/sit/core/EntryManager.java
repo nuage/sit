@@ -86,7 +86,7 @@ public class EntryManager {
     }
 
     public boolean answer(long parent, String response, long owner) {
-        final Entry entry = entryFactory.make(response, Entry.Type.Note, parent);
+        final Entry entry = entryFactory.make(response, Entry.Type.Note);
         add(entry, parent, owner);
         return true;
     }
@@ -106,7 +106,9 @@ public class EntryManager {
             throw new IllegalArgumentException("Entry " + entry + " does not contain " + textToExtract);
         }
         final Long parentId = entry.getParent();
-        final Entry newEntry = entryFactory.extractFrom(entry, textToExtract, parentId);
+        Entry newEntry = entryFactory.extractFrom(entry, textToExtract);
+        newEntry = newEntry.setParent(parentId);
+        
         Entry parent = get(parentId);
         parent = parent.addChild(newEntry.getId());
         

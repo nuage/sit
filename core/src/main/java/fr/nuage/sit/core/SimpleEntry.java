@@ -20,11 +20,10 @@ public class SimpleEntry implements Entry {
     private Type type;
     private Long parent;
 
-    public SimpleEntry(long id, String text, Type type, Long parent) {
+    public SimpleEntry(long id, String text, Type type) {
         this.id = id;
         this.text = text;
         this.type = type;
-        this.parent = parent;
         this.childs = Lists.newArrayList();
     }
 
@@ -39,7 +38,7 @@ public class SimpleEntry implements Entry {
     @Override
     public SimpleEntry addChild(long child) {
         SimpleEntry se = new SimpleEntry(this);
-        se.childs.add(child);
+        se.childs.add(0, child);
         return se;
     }
 

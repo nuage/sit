@@ -40,7 +40,7 @@ public class SimpleRightManagerTest extends TestCase {
         System.out.println("grant");
         User owner = new User(1, "Quentin");
         final EntryFactory ef = new EntryFactory();
-        Entry entry = ef.make("aa", Entry.Type.Note, 1l);
+        Entry entry = ef.make("aa", Entry.Type.Note);
         boolean result = srm.grant(owner.getId(), entry.getId(), Permission.Delete);
         assertEquals(true, result);
         assertTrue(srm.can(owner.getId(), entry.getId(), Permission.Delete));
@@ -67,7 +67,7 @@ public class SimpleRightManagerTest extends TestCase {
         System.out.println("remove");
         User owner = new User(1, "Quentin");
         final EntryFactory ef = new EntryFactory();
-        Entry entry = ef.make("aa", Entry.Type.Note, 1l);
+        Entry entry = ef.make("aa", Entry.Type.Note);
         boolean result = srm.grant(owner.getId(), entry.getId(), Permission.Delete);
         assertEquals(true, result);
 
@@ -86,11 +86,11 @@ public class SimpleRightManagerTest extends TestCase {
         System.out.println("copyRights");
         User owner = new User(1, "Quentin");
         final EntryFactory ef = new EntryFactory();
-        Entry source = ef.make("aa", Entry.Type.Note, 1l);
+        Entry source = ef.make("aa", Entry.Type.Note);
         boolean result = srm.grant(owner.getId(), source.getId(), Permission.Delete);
         assertEquals(true, result);
 
-        Entry dest = ef.make("bb", Entry.Type.Note, 1l);
+        Entry dest = ef.make("bb", Entry.Type.Note);
 
         result = srm.copy(source.getId(), dest.getId());
         assertEquals(true, result);
