@@ -33,10 +33,11 @@ public class EntryManager {
         rightManager.grant(owner, project.getId(), RightManager.Permission.Delete);
     }
 
-    public void add(Entry entry, long parent, long owner) {
+    public boolean add(Entry entry, long parent, long owner) {
         dataManager.update(get(parent).addChild(entry.getId()));
         dataManager.update(entry.setParent(parent));
         rightManager.grant(owner, entry.getId(), RightManager.Permission.Delete);
+        return true;
     }
 
     public void remove(long entry, long parent) {
