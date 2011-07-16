@@ -5,12 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-    <#list entries as entry>
-        <table>
-            <tr><td>Id</td><td>${entry.id?c}</td>
-            <tr><td>Text</td><td>${entry.text}</td>
-            <tr><td>Type</td><td>${entry.type}</td>
-        </table>
+    <#list projects as project>
+        <div>
+            <a href="/lys/entry/get?id=${project.id?c}">Project ${project.text}</a>
+        </div>
     </#list>
   </body>
 </html>

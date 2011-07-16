@@ -44,6 +44,6 @@ public class AddEntry extends Command {
 
     @Override
     protected String view() {
-        return "entry/add.ftl";
+        return "entry/add";
     }
 }

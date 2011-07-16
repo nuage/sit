@@ -26,7 +26,7 @@ public abstract class Command {
     private static Configuration cfg = null;
 
     public final void execute(ServletContext context, PrintWriter out, Map<String, String[]> params) throws TemplateException, IOException {
-        Template temp = getConfiguration(context).getTemplate(view());
+        Template temp = getConfiguration(context).getTemplate(view() + ".ftl");
         temp.process(response(unify(params), 10001l), out);
         out.flush();
     }

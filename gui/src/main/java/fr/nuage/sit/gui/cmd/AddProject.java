@@ -43,6 +43,6 @@ public class AddProject extends Command {
 
     @Override
     protected String view() {
-        return "project/add.ftl";
+        return "project/add";
     }
 }

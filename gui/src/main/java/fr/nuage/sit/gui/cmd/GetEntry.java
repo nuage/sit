@@ -11,6 +11,7 @@ import fr.nuage.sit.core.Entry;
 import fr.nuage.sit.core.Entry.Type;
 import fr.nuage.sit.core.EntryFactory;
 import fr.nuage.sit.core.EntryManager;
+import fr.nuage.sit.core.LoadedEntry;
 import java.util.List;
 import java.util.Map;
 
@@ -30,16 +31,16 @@ public class GetEntry extends Command {
 
     @Override
     protected Map<String, Object> response(Map<String, String> params, Long user) {
-        final List<Entry> entries = entryManager.getEntries();
-
+        final Long id = getL(params, "id");
+        final LoadedEntry entry = entryManager.getLoadedEntry(id);
         Map<String, Object> data = newHashMap();
-        data.put("entries", entries);
+        data.put("entry", entry);
 
         return data;
     }
 
     @Override
     protected String view() {
-        return "entry/get.ftl";
+        return "entry/get";
     }
 }

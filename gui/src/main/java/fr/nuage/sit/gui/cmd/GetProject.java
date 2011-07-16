@@ -30,16 +30,16 @@ public class GetProject extends Command {
 
     @Override
     protected Map<String, Object> response(Map<String, String> params, Long user) {
-        final List<Entry> entries = entryManager.getEntries();
+        final List<Entry> entries = entryManager.getProjects();
 
         Map<String, Object> data = newHashMap();
-        data.put("entries", entries);
+        data.put("projects", entries);
 
         return data;
     }
 
     @Override
     protected String view() {
-        return "project/get.ftl";
+        return "project/get";
     }
 }

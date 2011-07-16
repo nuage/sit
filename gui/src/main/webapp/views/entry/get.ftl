@@ -2,15 +2,25 @@
 <html>
   <head>
     <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="/js/jquery-1.6.2"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.14.custom.min"></script>
+    <link href="/css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-    <#list entries as entry>
-        <table>
-            <tr><td>Id</td><td>${entry.id?c}</td>
-            <tr><td>Text</td><td>${entry.text}</td>
-            <tr><td>Type</td><td>${entry.type}</td>
-        </table>
-    </#list>
+    <@display entry/>
   </body>
 </html>
+
+<#macro display entry >
+    <div style="border: 1px solid #dadada">
+        <span>Entry ${entry.id?c} <#if entry.parent??> - parent = ${entry.parent?c}</#if></span>
+        <p>${entry.text}</p>
+        <#if entry.childs?? && entry.childs?has_content>
+            <div style="margin-left: 10px">
+                <#list entry.childs as child>
+                    <@display child/>
+                </#list>
+            </div>
+        </#if> 
+    </div>
+</#macro>
