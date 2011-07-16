@@ -5,6 +5,10 @@
 
 package fr.nuage.sit.core;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import static com.google.common.collect.Lists.newArrayList;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -52,7 +56,31 @@ public class EntryManager {
     public List<Entry> getEntries() {
         return dataManager.getEntries();
     }
+    
+    public List<Entry> getProjects() {
+        final List<Entry> entries = getEntries();
+        return ImmutableList.copyOf(Collections2.filter(entries, new Predicate<Entry>() {
 
+            @Override
+            public boolean apply(Entry t) {
+                return t.getParent() == null;
+            }
+            
+        }));
+    }
+
+    public LoadedEntry getLoadedEntry(long id) {
+        final Entry root = get(id);
+        final List<Long> childs = root.getChildsId();
+        final List<LoadedEntry> lChilds = newArrayList();
+        if (childs != null && !childs.isEmpty()) {
+            for (Long child : childs) {
+                lChilds.add(getLoadedEntry(child));
+            }
+        }
+        return entryFactory.make(root, lChilds);
+    }
+    
     public Entry get(long id) {
         return dataManager.getEntry(id);
     }

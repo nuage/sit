@@ -25,7 +25,7 @@ public interface Entry {
 
     Type getType();
 
-    List<Long> getChilds();
+    List<Long> getChildsId();
 
     Long getParent();
 

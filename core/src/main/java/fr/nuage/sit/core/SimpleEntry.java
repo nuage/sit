@@ -28,11 +28,12 @@ public class SimpleEntry implements Entry {
         this.childs = Lists.newArrayList();
     }
 
-    private SimpleEntry(Entry e) {
+    protected SimpleEntry(Entry e) {
         id = e.getId();
         text = e.getText();
         type = e.getType();
-        childs = Lists.newArrayList(e.getChilds());
+        parent = e.getParent();
+        childs = Lists.newArrayList(e.getChildsId());
     }
 
     @Override
@@ -86,7 +87,7 @@ public class SimpleEntry implements Entry {
     }
 
     @Override
-    public List<Long> getChilds() {
+    public List<Long> getChildsId() {
         return ImmutableList.copyOf(childs);
     }
 

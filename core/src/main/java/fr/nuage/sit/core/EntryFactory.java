@@ -19,13 +19,17 @@ public class EntryFactory {
 
     public Entry make(Entry entry, String text, Long parent) {
         SimpleEntry newEntry = (SimpleEntry) make(text, entry.getType(), parent);
-        final List<Long> childs = entry.getChilds();
+        final List<Long> childs = entry.getChildsId();
         for (Long child : childs) {
             newEntry = newEntry.addChild(child);
         }
         return newEntry;
     }
 
+    public LoadedEntry make(Entry entry, List<LoadedEntry> childs) {
+        return new SimpleLoadedEntry(entry, childs);
+    }
+    
     private long getNextId() {
         return Math.round(Math.random() * 10000);
     }
